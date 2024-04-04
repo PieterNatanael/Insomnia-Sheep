@@ -122,25 +122,47 @@ struct ContentView: View {
                 .padding(.horizontal)
                 
                 Spacer()
-              
-                Text("\(sheepCount) 🐑")
-                    .font(.system(size: 133))
-                    .multilineTextAlignment(.center)
-                    .padding()
-                    .foregroundColor(.white)
-                    .onTapGesture {
-                        withAnimation {
-                            showBlackBackground.toggle()
-                            if isSoundOn {
-                                playSheepSound()
-                            }
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                withAnimation {
-                                    showBlackBackground = false
+                
+                VStack {
+                    Image("sheep")
+                        //.renderingMode(.template)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height / 2) // Adjust the height as needed
+                        .onTapGesture {
+                            withAnimation {
+                                showBlackBackground.toggle()
+                                if isSoundOn {
+                                    playSheepSound()
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                    withAnimation {
+                                        showBlackBackground = false
+                                    }
+                                }
+                            }}
+                    
+                    Text("\(sheepCount) ")
+                        .font(.system(size: 133))
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        .foregroundColor(.white)
+                        .onTapGesture {
+                            withAnimation {
+                                showBlackBackground.toggle()
+                                if isSoundOn {
+                                    playSheepSound()
+                                }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                    withAnimation {
+                                        showBlackBackground = false
+                                    }
                                 }
                             }
-                        }
                     }
+                   
+                }
 
                 if isCounting {
                     Button(action: stopCounting) {
@@ -161,7 +183,7 @@ struct ContentView: View {
                             .cornerRadius(25.0)
                     }
                 }
-               
+                
                 Spacer()
             }
             .sheet(isPresented: $showAd) {
@@ -239,96 +261,142 @@ struct AdView: View {
 
 
     var body: some View {
-        VStack {
-            Toggle(isOn: $isSoundOn, label: {
-                Text("Sheep Sound \(isSoundOn ? "On" : "Off")")
+        ScrollView {
+            VStack {
+                Toggle(isOn: $isSoundOn, label: {
+                    Text("Sheep Sound \(isSoundOn ? "On" : "Off")")
+                        .foregroundColor(.white)
+                })
+                Toggle(isOn: $shouldChangeGradientColor, label: {
+                    Text("Background Color\(shouldChangeGradientColor ? " Blue" : " Black")")
+                                  .foregroundColor(.white)
+                          })
+                // Other content...
+                Text("Ads to Support Us!")
+                                    .font(.title)
+                                    .padding()
+                                    .foregroundColor(.white)
+
+                                // Your ad content here...
+
+                                Text("Buying our apps with a one-time fee helps us keep making helpful apps.")
+                                    .font(.subheadline)
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+                                    .multilineTextAlignment(.center)
+                           
+                
+                Text("TimeTell.")
+                    .font(.title)
+    //                           .monospaced()
+                    .padding()
                     .foregroundColor(.white)
-            })
-            Toggle(isOn: $shouldChangeGradientColor, label: {
-                Text("Background Color\(shouldChangeGradientColor ? " Blue" : " Black")")
-                              .foregroundColor(.white)
-                      })
-            // Other content...
-            Text("Ad.")
-                           .font(.title)
-//                           .bold()
-//                           .monospaced()
-                           .padding()
-                           .foregroundColor(.white)
-                       
-                       Text("Dry Eye Read.")
-                           .font(.title)
-//                           .monospaced()
-                           .padding()
-                           .foregroundColor(.white)
-                           .onTapGesture {
-                               if let url = URL(string: "https://apps.apple.com/id/app/dry-eye-read/id6474282023") {
-                                   UIApplication.shared.open(url)
-                               }
-                           }
-                       
-                       Text("iProgramMe.")
-                           .font(.title)
-//                           .monospaced()
-                           .padding()
-                           .foregroundColor(.white)
-                           .onTapGesture {
-                               if let url = URL(string: "https://apps.apple.com/id/app/iprogramme/id6470770935") {
-                                   UIApplication.shared.open(url)
-                               }
-                           }
-                       
-                       Text("LoopSpeak.")
-                           .font(.title)
-//                           .monospaced()
-                           .padding()
-                           .foregroundColor(.white)
-                           .onTapGesture {
-                               if let url = URL(string: "https://apps.apple.com/id/app/loopspeak/id6473384030") {
-                                   UIApplication.shared.open(url)
-                               }
-                           }
-                       
-                       Text("TimeTell.")
-                           .font(.title)
-//                           .monospaced()
-                           .padding()
-                           .foregroundColor(.white)
-                           .onTapGesture {
-                               if let url = URL(string: "https://apps.apple.com/app/time-tell/id6479016269") {
-                                   UIApplication.shared.open(url)
-                               }
-                           }
-                       
-                       Text("TemptationTrack.")
-                           .font(.title)
-//                           .monospaced()
-                           .padding()
-                           .foregroundColor(.white)
-                           .onTapGesture {
-                               if let url = URL(string: "https://apps.apple.com/id/app/temptationtrack/id6471236988") {
-                                   UIApplication.shared.open(url)
-                               }
-                           }
-
-                       Spacer()
-
-                       Button("Close") {
-                           // Perform confirmation action
-                           onConfirm()
-                       }
-                       .font(.title)
-                       .padding()
-                       .foregroundColor(.black)
-                       .background(Color.white)
-                       .cornerRadius(25.0)
-                       .padding()
+                    .onTapGesture {
+                        if let url = URL(string: "https://apps.apple.com/app/time-tell/id6479016269") {
+                            UIApplication.shared.open(url)
+                        }
+                    }
+    Text("Time Announcement.") // Add your 30 character description here
+                      .font(.subheadline)
+                      .padding(.horizontal)
+                      .foregroundColor(.white)
+                
                    
+                   Text("Insomnia Sheep.")
+                       .font(.title)
+        //                           .monospaced()
+                       .padding()
+                       .foregroundColor(.white)
+                       .onTapGesture {
+                           if let url = URL(string: "https://apps.apple.com/id/app/insomnia-sheep/id6479727431") {
+                               UIApplication.shared.open(url)
+                           }
+                       }
+                Text("Design to Count Sheep.") // Add your 30 character description here
+                                    .font(.subheadline)
+                                    .padding(.horizontal)
+                                    .foregroundColor(.white)
+                              
+                              Text("Dry Eye Read.")
+                                  .font(.title)
+        //                           .monospaced()
+                                  .padding()
+                                  .foregroundColor(.white)
+                                  .onTapGesture {
+                                      if let url = URL(string: "https://apps.apple.com/id/app/dry-eye-read/id6474282023") {
+                                          UIApplication.shared.open(url)
+                                      }
+                                  }
+                Text("Read With Ease.") // Add your 30 character description here
+                                    .font(.subheadline)
+                                    .padding(.horizontal)
+                                    .foregroundColor(.white)
+                              
+                              Text("iProgramMe.")
+                                  .font(.title)
+        //                           .monospaced()
+                                  .padding()
+                                  .foregroundColor(.white)
+                                  .onTapGesture {
+                                      if let url = URL(string: "https://apps.apple.com/id/app/iprogramme/id6470770935") {
+                                          UIApplication.shared.open(url)
+                                      }
+                                  }
+                Text("Code Your Best Self.") // Add your 30 character description here
+                                    .font(.subheadline)
+                                    .padding(.horizontal)
+                                    .foregroundColor(.white)
+                              
+                              Text("LoopSpeak.")
+                                  .font(.title)
+        //                           .monospaced()
+                                  .padding()
+                                  .foregroundColor(.white)
+                                  .onTapGesture {
+                                      if let url = URL(string: "https://apps.apple.com/id/app/loopspeak/id6473384030") {
+                                          UIApplication.shared.open(url)
+                                      }
+                                  }
+                Text("Looping Reading Companion.") // Add your 30 character description here
+                                    .font(.subheadline)
+                                    .padding(.horizontal)
+                                    .foregroundColor(.white)
+                              
+                         
+                              Text("TemptationTrack.")
+                                  .font(.title)
+        //                           .monospaced()
+                                  .padding()
+                                  .foregroundColor(.white)
+                                  .onTapGesture {
+                                      if let url = URL(string: "https://apps.apple.com/id/app/temptationtrack/id6471236988") {
+                                          UIApplication.shared.open(url)
+                                      }
+                                  }
+                Text("Empowering Progress.") // Add your 30 character description here
+                                    .font(.subheadline)
+                                    .padding(.horizontal)
+                                    .foregroundColor(.white)
+
+                           Spacer()
+
+                           Button("Close") {
+                               // Perform confirmation action
+                               onConfirm()
+                           }
+                           .font(.title)
+                           .padding()
+                           .foregroundColor(.black)
+                           .background(Color.white)
+                           .cornerRadius(25.0)
+                           .padding()
+                       
+            }
+            .padding()
+            .background(Color.black)
+            .cornerRadius(15.0)
+        .padding()
         }
-        .padding()
-        .background(Color.black)
-        .cornerRadius(15.0)
-        .padding()
     }
 }
 
@@ -337,7 +405,7 @@ struct ConfirmationView: View {
 
     var body: some View {
        VStack {
-           Text("Press start to begin counting sheep every 30 seconds. Tap the screen when you hear sheep counting every 30 seconds to confirm your wakefulness.")
+           Text("Press start to begin counting sheep every 30 seconds. Tap on the sheep when you hear the sheep counting every 30 seconds to confirm that you are awake.")
                .font(.title)
                .multilineTextAlignment(.center)
 //                       .monospaced()
