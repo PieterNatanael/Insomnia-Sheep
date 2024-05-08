@@ -1,6 +1,7 @@
 Privacy Policy: Insomnia Sheep respects your privacy and does not collect any personal information or user data. Our app does not track, store, or share any data about its users.
 
 For inquiry email to : pieternatanael@icloud.com
+Developer : Pieter Yoshua Natanael
 
 Arabic: سياسة الخصوصية: يحترم الأرق الخروف خصوصيتك ولا يقوم بجمع أي معلومات شخصية أو بيانات مستخدم. لا تتتبع تطبيقنا ولا يخزن أو يشارك أي بيانات عن مستخدميه. للتحقيق، يرجى مراسلتنا عبر البريد الإلكتروني: pieternatanael@icloud.com
 
