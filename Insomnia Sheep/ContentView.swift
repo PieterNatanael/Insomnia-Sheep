@@ -18,7 +18,6 @@ struct ContentView: View {
     @State private var timer: Timer?               // Timer for counting sheep
     @State private var showBlackBackground = false // Controls background animation
     @State private var showConfirmationScreen = false
-    @State private var showAd = false
     @State private var isSoundOn = true           // Controls sheep sound
     @State private var isAnimating = false        // Controls gradient animation
     @State private var shouldChangeGradientColor = false // Controls gradient color scheme
@@ -66,13 +65,6 @@ struct ContentView: View {
                 controlButton
                 
                 Spacer()
-            }
-            .sheet(isPresented: $showAd) {
-                AdView(
-                    onConfirm: { showAd = false },
-                    isSoundOn: $isSoundOn,
-                    shouldChangeGradientColor: $shouldChangeGradientColor
-                )
             }
             .sheet(isPresented: $showConfirmationScreen) {
                 ConfirmationView(
@@ -246,76 +238,6 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-// MARK: - Supporting Views
-struct AdView: View {
-    let onConfirm: () -> Void
-    @Binding var isSoundOn: Bool
-    @Binding var shouldChangeGradientColor: Bool
-    
-    var body: some View {
-        ScrollView {
-            VStack {
-                // Settings toggles
-                settingsSection
-                
-                // Ad content
-                adContent
-                
-                // App promotions
-              
-                
-                Spacer()
-                
-                closeButton
-            }
-            .padding()
-            .background(Color.black)
-            .cornerRadius(15.0)
-            .padding()
-        }
-    }
-    
-    private var settingsSection: some View {
-        VStack {
-            Toggle(isOn: $isSoundOn) {
-                Text("Sheep Sound \(isSoundOn ? "On" : "Off")")
-                    .foregroundColor(.white)
-            }
-            
-            Toggle(isOn: $shouldChangeGradientColor) {
-                Text("Background Color\(shouldChangeGradientColor ? " Blue" : " Black")")
-                    .foregroundColor(.white)
-            }
-        }
-    }
-    
-    private var adContent: some View {
-        VStack {
-            Text("Ads to Support Us!")
-                .font(.title)
-                .padding()
-                .foregroundColor(.white)
-            
-            Text("Buying our apps with a one-time fee helps us keep making helpful apps.")
-                .font(.subheadline)
-                .foregroundColor(.white)
-                .padding(.horizontal)
-                .multilineTextAlignment(.center)
-        }
-    }
-    
-    private var closeButton: some View {
-        Button("Close") {
-            onConfirm()
-        }
-        .font(.title)
-        .padding()
-        .foregroundColor(.black)
-        .background(Color.white)
-        .cornerRadius(25.0)
-        .padding()
-    }
-}
 
 // MARK: - Confirmation View
 struct ConfirmationView: View {
