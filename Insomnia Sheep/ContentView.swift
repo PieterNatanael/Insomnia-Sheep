@@ -53,18 +53,22 @@ struct ContentView: View {
             
             // Content Layer
             VStack {
+//                Spacer()
+//                    .frame(height: 30)
                 // Top Navigation
                 navigationBar
                 
-                Spacer()
+//                Spacer()
                 
                 // Main Content
                 sheepCounterContent
                 
                 // Control Button
-                controlButton
+       
+//                
+//                Spacer()
+//                    .frame(height: 90)
                 
-                Spacer()
             }
             .sheet(isPresented: $showConfirmationScreen) {
                 ConfirmationView(
@@ -119,7 +123,7 @@ struct ContentView: View {
             Button(action: { showConfirmationScreen = true }) {
                 Image(systemName: "questionmark.circle.fill")
                     .font(.system(size: 30))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
                     .padding()
             }
         }
@@ -131,43 +135,52 @@ struct ContentView: View {
             Image("sheep")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .frame(width: UIScreen.main.bounds.width * 0.8, // 80% of the screen width
+                           height: UIScreen.main.bounds.height * 0.6) // 40% of the screen height
                 .frame(width: UIScreen.main.bounds.width,
                        height: UIScreen.main.bounds.height / 2)
                 .onTapGesture(perform: handleBackgroundTap)
             
-            Text("\(sheepCount)")
-                .font(.system(size: 133))
-                .multilineTextAlignment(.center)
-                .padding()
-                .foregroundColor(.white)
-                .onTapGesture(perform: handleBackgroundTap)
+            HStack {
+                Text("\(sheepCount)")
+                    .font(.system(size: 99))
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
+                    .onTapGesture(perform: handleBackgroundTap)
+                
+            
+                Group {
+                    if isCounting {
+                        Button(action: stopCounting) {
+                            Text("Stop")
+                                .font(.title)
+                                .padding()
+                                .foregroundColor(.white)
+                                .background(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
+                                .cornerRadius(25.0)
+                        }
+                    } else {
+                        Button(action: startCounting) {
+                            Text("Start")
+                                .font(.title)
+                                .padding()
+                                .foregroundColor(.black)
+                                .background(Color.white)
+                                .cornerRadius(25.0)
+                        }
+                    }
+                        
+                }
+                
+            }
+            
+            
+            
         }
     }
     
-    private var controlButton: some View {
-        Group {
-            if isCounting {
-                Button(action: stopCounting) {
-                    Text("Stop")
-                        .font(.title)
-                        .padding()
-                        .foregroundColor(.black)
-                        .background(Color.red)
-                        .cornerRadius(25.0)
-                }
-            } else {
-                Button(action: startCounting) {
-                    Text("Start")
-                        .font(.title)
-                        .padding()
-                        .foregroundColor(.black)
-                        .background(Color.white)
-                        .cornerRadius(25.0)
-                }
-            }
-        }
-    }
+
     
     // MARK: - Functions
     private func handleBackgroundTap() {
@@ -234,7 +247,7 @@ struct ContentView: View {
 // MARK: - Preview Provider
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        MainAppView()
     }
 }
 
@@ -294,7 +307,8 @@ struct ConfirmationView: View {
             •Press start to initiate sheep counting every 30 seconds.
             •Listen for the sheep counting sound at 30-second intervals.
             •Tap on the sheep when you hear the sound to confirm wakefulness.
-            •Repeat the process until you're ready to stop.
+            •Repeat the process until you're a sleep.
+            •Sleep detection is triggered only after the user has spent at least 15 minutes in the app.
             """)
             .font(.title3)
             .multilineTextAlignment(.leading)
@@ -342,7 +356,7 @@ struct ConfirmationView: View {
         }
         .frame(maxWidth: .infinity)
         .padding()
-        .background(Color.blue)
+        .background(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
         .foregroundColor(.white)
         .font(.title3.bold())
         .cornerRadius(10)
@@ -393,6 +407,9 @@ struct AppCardView: View {
         }
     }
 }
+
+
+
 
 /*
  

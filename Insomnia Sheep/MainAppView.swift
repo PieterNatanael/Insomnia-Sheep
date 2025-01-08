@@ -16,24 +16,34 @@ struct MainAppView: View {
         TabView(selection: $selectedTab) {
             ContentView()
                 .tabItem {
-                    Image(systemName: "repeat")
-                    Text("Loop Speak")
+                    Image(systemName: "atom")
+                    Text("The Sheep")
                 }
                 .tag(0)
             
-           ListView()
+           StoryView()
                 .tabItem {
-                    Image(systemName: "square.and.pencil")
-                    Text("Notes")
+                    Image(systemName: "repeat")
+                    Text("BedTime Story")
                 }
                 .tag(1)
             
-//            DiaryView(dataStore: DataStore())
-//                .tabItem {
-//                    Image(systemName: "square.and.pencil")
-//                    Text("Diary")
-//                }
-//                .tag(2)
+            ListView()
+                .tabItem {
+                    Image(systemName: "book")
+                    Text("Story Library")
+                }
+                .tag(2)
+            
+            AutoLockView()
+                .tabItem {
+                    Image(systemName: "eye.fill")
+                    Text("Sleep Detection")
+                }
+                .tag(3)
+            
+            
         }
+        .accentColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
     }
 }
