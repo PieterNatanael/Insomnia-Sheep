@@ -53,21 +53,13 @@ struct ContentView: View {
             
             // Content Layer
             VStack {
-//                Spacer()
-//                    .frame(height: 30)
-                // Top Navigation
+
                 navigationBar
                 
-//                Spacer()
-                
-                // Main Content
+
                 sheepCounterContent
                 
-                // Control Button
-       
-//                
-//                Spacer()
-//                    .frame(height: 90)
+
                 
             }
             .sheet(isPresented: $showConfirmationScreen) {

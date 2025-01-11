@@ -1,18 +1,18 @@
-//
-//  ListView.swift
-//  LoopSpeak
-//
-//  Created by Pieter Yoshua Natanael on 09/12/24.
-//
+// MARK: - ListView.swift
+// This file contains the ListView for the LoopSpeak app, which allows users to save and manage text entries.
+// Users can add new text entries, view saved entries, and interact with ads and app functionality.
 
 import SwiftUI
 
+// MARK: - TextEntry Model
+/// Represents a text entry with a unique ID, text, preview text, and creation date.
 struct TextEntry: Identifiable, Codable {
     let id: UUID
     var text: String
     var previewText: String
     var dateCreated: Date
-    
+
+    /// Initializes a new TextEntry with the given text.
     init(text: String) {
         self.id = UUID()
         self.text = text
@@ -23,68 +23,64 @@ struct TextEntry: Identifiable, Codable {
     }
 }
 
+// MARK: - ListView
+/// The main view for the LoopSpeak app, allowing users to save and manage text entries.
 struct ListView: View {
-    @State private var savedTexts: [TextEntry] = []
-    @State private var newText: String = ""
-    @State private var showCopyConfirmation: Bool = false
-    @FocusState private var isTextEditorFocused: Bool
-    @State private var showAdsAndAppFunctionality = false
-    
+    @State private var savedTexts: [TextEntry] = [] // Stores saved text entries
+    @State private var newText: String = "" // Input for new text entry
+    @State private var showCopyConfirmation: Bool = false // Indicates if copy confirmation is shown
+    @FocusState private var isTextEditorFocused: Bool // Focus state for text editor
+    @State private var showAdsAndAppFunctionality = false // Controls ad and app functionality visibility
+
     var body: some View {
         VStack {
             HStack {
                 Spacer()
                 Button(action: {
-                    showAdsAndAppFunctionality = true
+                    showAdsAndAppFunctionality = true // Show ads and app functionality
                 }) {
                     Image(systemName: "questionmark.circle.fill")
                         .font(.system(size: 30))
                         .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
                         .padding()
-                     
                 }
             }
             NavigationView {
                 VStack {
-                    
                     // Text Input Section
                     VStack {
+                        // Input field for new text
                         TextEditor(text: $newText)
-                            .frame(height: 150)
-                            .border(Color.gray.opacity(0.3), width: 1)
-                            .padding()
                             .focused($isTextEditorFocused)
-                        
-                        HStack {
-                            
-                            
-                            Button(action: saveText) {
-                                Text("Save Story")
-                                    .frame(maxWidth: .infinity)
-                                    .padding()
-                                    .background(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
-                                    .foregroundColor(.white)
-                                    .cornerRadius(10)
-                            }
-                            .disabled(newText.isEmpty)
-                            
-                            // Paste Button
-                            Button(action: {
-                                newText = UIPasteboard.general.string ?? ""
-                            }) {
-                                Image(systemName: "doc.on.clipboard.fill")
-                                    .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
-                            }
-                            .padding(.horizontal)
-                            
-                            Button(action: {
-                                newText = ""
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
-                            }
-                            
-                        }
+                            .padding()
+                            .border(Color.gray, width: 1)
+                            .cornerRadius(5)
+                    }
+                    // Save button
+                    Button(action: saveText) {
+                        Text("Save Story")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                    }
+                    .disabled(newText.isEmpty)
+                    
+                    // Paste Button
+                    Button(action: {
+                        newText = UIPasteboard.general.string ?? ""
+                    }) {
+                        Image(systemName: "doc.on.clipboard.fill")
+                            .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
+                    }
+                    .padding(.horizontal)
+                    
+                    Button(action: {
+                        newText = ""
+                    }) {
+                        Image(systemName: "trash")
+                            .foregroundColor(Color(#colorLiteral(red: 0.5807225108, green: 0.066734083, blue: 0, alpha: 1)))
                     }
                     
                     // Saved Texts List
@@ -145,31 +141,27 @@ struct ListView: View {
             }.navigationViewStyle(StackNavigationViewStyle())
         }
     }
-    
-    // Save text to the list
+
+    // MARK: - Functions
+    /// Saves the new text to the list of saved texts.
     func saveText() {
-        guard !newText.isEmpty else { return }
-        
+        guard !newText.isEmpty else { return } // Ensure new text is not empty
         let newEntry = TextEntry(text: newText)
-        savedTexts.append(newEntry)
-        
-        // Clear text after saving
-        newText = ""
-        
+        savedTexts.append(newEntry) // Add new text entry to the list
+        newText = "" // Clear input field
         // Dismiss keyboard
         isTextEditorFocused = false
-        
         // Save to UserDefaults
         saveToUserDefaults()
     }
     
-    // Delete entries by IndexSet (used by .onDelete)
+    /// Deletes entries by IndexSet (used by .onDelete).
     func deleteEntries(at offsets: IndexSet) {
         savedTexts.remove(atOffsets: offsets)
         saveToUserDefaults()
     }
     
-    // Save texts to UserDefaults for persistence
+    /// Saves texts to UserDefaults for persistence.
     func saveToUserDefaults() {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(savedTexts) {
@@ -177,7 +169,7 @@ struct ListView: View {
         }
     }
     
-    // Load texts from UserDefaults on view initialization
+    /// Loads texts from UserDefaults on view initialization.
     init() {
         if let savedTextsData = UserDefaults.standard.object(forKey: "savedTexts") as? Data {
             let decoder = JSONDecoder()
@@ -188,7 +180,7 @@ struct ListView: View {
     }
 }
 
-
+// MARK: - ShowAdsAndAppFunctionalityView
 struct ShowAdsAndAppFunctionalityView: View {
     var onConfirm: () -> Void
     
@@ -390,8 +382,7 @@ struct ShowAdsAndAppFunctionalityView: View {
     }
 }
 
-
-// Preview for SwiftUI
+// MARK: - Preview for SwiftUI
 struct ListView_Previews: PreviewProvider {
     static var previews: some View {
         ListView()
